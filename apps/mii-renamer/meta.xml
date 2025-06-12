@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<app version="1">
+	<name>Mii Renamer</name>
+	<version>0.1.0</version>
+	<release_date>20250612000000</release_date>
+	<coder>Floogle</coder>
+	<short_description>Renames Miis</short_description>
+	<long_description>Mii Renamer is a tool that allows for renaming Miis, including those not created on your Wii, without breaking game saves in Wii Sports.
+</long_description>
+</app>
