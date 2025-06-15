@@ -189,8 +189,9 @@ void mii_rename(u16 *name_ptr) {
 
 		int char_change = ((current_dpad & WPAD_BUTTON_UP) != 0) - ((current_dpad & WPAD_BUTTON_DOWN) != 0);
 		if (char_change != 0) {
-			if (name[cursor] == 0) {
-				if (cursor < 9) name[cursor+1] = 0;
+			bool going_outside_range = name[cursor] + char_change < 0x20 || name[cursor] + char_change >= 0x7f;
+			if (name[cursor] == 0 || (cursor == 0 && going_outside_range)) {
+				if (cursor < 9 && name[cursor] == 0) name[cursor+1] = 0;
 				if (char_change > 0) name[cursor] = 0x20;
 				else name[cursor] = 0x7e;
 			} else {
