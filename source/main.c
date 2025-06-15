@@ -259,15 +259,18 @@ void save_db(void) {
 	return;
 }
 
+static int mii_count = 0;
+static int mii_ids[100] = {0};
+
 void redraw_mii_list(int camera) {
 	SetCursor(0, 8);
 	ClearBelowCursor();
-	for (int i = 0; i < WINDOW_SIZE; i++) {
+	for (int i = 0; i < WINDOW_SIZE && i + camera < mii_count; i++) {
 		char name[10];
 		for (int j = 0; j < 10; j++) {
-			name[j] = db.mii[i + camera].name[j];
+			name[j] = db.mii[mii_ids[i + camera]].name[j];
 		}
-		printf(" %02d: %.10s\n", i + camera, name);
+		printf(" %.10s\n", name);
 	}
 }
 
@@ -292,7 +295,7 @@ void mii_selector(void) {
 		}
 
 		if (pressed & WPAD_BUTTON_A) {
-			mii_rename(db.mii[cursor].name);
+			mii_rename(db.mii[mii_ids[cursor]].name);
 			mii_selector_reset(camera);
 			pressed = 0;
 		}
@@ -305,19 +308,21 @@ void mii_selector(void) {
 		cursor += ((current_dpad & WPAD_BUTTON_DOWN) != 0) - ((current_dpad & WPAD_BUTTON_UP) != 0);
 
 		if (cursor < 0) {
-			cursor = 99;
+			cursor = mii_count - 1;
 		}
-		if (cursor > 99) {
+		if (cursor >= mii_count) {
 			cursor = 0;
 		}
 
-		if (cursor < camera) {
-			camera = cursor;
-			redraw_mii_list(camera);
-		}
-		if (camera <= cursor - WINDOW_SIZE) {
-			camera = cursor - WINDOW_SIZE + 1;
-			redraw_mii_list(camera);
+		if (mii_count > WINDOW_SIZE) {
+			if (cursor < camera) {
+				camera = cursor;
+				redraw_mii_list(camera);
+			}
+			if (camera <= cursor - WINDOW_SIZE) {
+				camera = cursor - WINDOW_SIZE + 1;
+				redraw_mii_list(camera);
+			}
 		}
 		SetCursor(0, 8 + cursor - camera);
 		printf(">");
@@ -386,6 +391,12 @@ int main(void) {
 	int ret = ISFS_Read(db_fd, &db, sizeof(db));
 
 	ISFS_Close(db_fd);
+
+	for (int i = 0; i < 100; i++) {
+		if (db.mii[i].name[0] != 0) {
+			mii_ids[mii_count++] = i;
+		}
+	}
 	
 	if (ret != sizeof(db)) {
 		printf("Error code %d\n", ret);
