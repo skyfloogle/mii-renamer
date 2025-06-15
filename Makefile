@@ -49,7 +49,7 @@ ifneq ($(BUILD),$(notdir $(CURDIR)))
 #---------------------------------------------------------------------------------
 
 export APP_NAME := mii-renamer
-export VERSION  := 0.1.0
+export VERSION  := 0.1.1
 
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
 
