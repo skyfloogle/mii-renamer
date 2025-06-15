@@ -291,7 +291,7 @@ void mii_selector(void) {
 		}
 
 		if (pressed & WPAD_BUTTON_A) {
-			mii_rename(db.mii[cursor + camera].name);
+			mii_rename(db.mii[cursor].name);
 			mii_selector_reset(camera);
 			pressed = 0;
 		}
