@@ -187,7 +187,7 @@ void mii_rename(u16 *name_ptr) {
 		if (cursor < 0) cursor = name_len;
 		if (cursor >= name_len + 1) cursor = 0;
 
-		int char_change = ((current_dpad & WPAD_BUTTON_DOWN) != 0) - ((current_dpad & WPAD_BUTTON_UP) != 0);
+		int char_change = ((current_dpad & WPAD_BUTTON_UP) != 0) - ((current_dpad & WPAD_BUTTON_DOWN) != 0);
 		if (char_change != 0) {
 			if (name[cursor] == 0) {
 				if (cursor < 9) name[cursor+1] = 0;
